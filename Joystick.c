@@ -413,6 +413,14 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 				case A:
 					ReportData->Button |= SWITCH_A;
 					break;
+					
+				case X:
+					ReportData->Button |= SWITCH_X;
+					break;
+					
+				case Y:
+					ReportData->Button |= SWITCH_Y;
+					break;
 
 				case B:
 					ReportData->Button |= SWITCH_B;
@@ -420,6 +428,10 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 
 				case R:
 					ReportData->Button |= SWITCH_R;
+					break;
+					
+				case L:
+					ReportData->Button |= SWITCH_L;
 					break;
 
 				case THROW:
