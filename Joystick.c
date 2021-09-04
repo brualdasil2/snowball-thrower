@@ -51,7 +51,20 @@ static const command step[] = {
 	{ A,          5 },
 	{ NOTHING,  250 },
 
+
+	{ DOWN,		1 },
+	{ NOTHING, 	20 },
+	{ DOWN,		1 },
+	{ NOTHING, 	20 },
+	{ DOWN,		1 },
+	{ NOTHING, 	20 },
+	{ DOWN,		1 },
+	{ NOTHING, 	20 },
+	{ DOWN,		1 },
+	{ NOTHING, 	20 }
+
 	// Talk to Pondo
+	/*
 	{ A,          5 }, // Start
 	{ NOTHING,   30 },
 	{ B,          5 }, // Quick output of text
@@ -184,6 +197,7 @@ static const command step[] = {
 	{ NOTHING,   20 },
 	{ B,          5 },
 	{ NOTHING,   20 } // Saving, intermission
+	*/
 };
 
 // Main entry point.
