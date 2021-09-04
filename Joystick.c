@@ -43,25 +43,25 @@ typedef struct {
 
 static const command step[] = {
 	// Setup controller
-	{ NOTHING,  250 },
+	{ NOTHING,  100 },
 	{ TRIGGERS,   5 },
-	{ NOTHING,  150 },
+	{ NOTHING,  100 },
 	{ TRIGGERS,   5 },
-	{ NOTHING,  150 },
+	{ NOTHING,  50 },
 	{ A,          5 },
-	{ NOTHING,  250 },
+	{ NOTHING,  100 },
 
 
 	{ DOWN,		1 },
-	{ NOTHING, 	20 },
+	{ NOTHING, 	6 },
 	{ DOWN,		1 },
-	{ NOTHING, 	20 },
+	{ NOTHING, 	6 },
 	{ DOWN,		1 },
-	{ NOTHING, 	20 },
+	{ NOTHING, 	6 },
 	{ DOWN,		1 },
-	{ NOTHING, 	20 },
+	{ NOTHING, 	6 },
 	{ DOWN,		1 },
-	{ NOTHING, 	20 }
+	{ NOTHING, 	6 }
 
 	// Talk to Pondo
 	/*
