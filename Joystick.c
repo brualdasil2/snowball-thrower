@@ -20,7 +20,6 @@ these buttons for our use.
 
 #include "Joystick.h"
 #include <stdlib.h>
-#include <time.h>
 
 typedef enum {
 	UP,
@@ -35,8 +34,13 @@ typedef enum {
 	B,
 	L,
 	R,
+	ZL,
+	ZR,
 	LEFT_ROLL,
 	RIGHT_ROLL,
+	SOPTDODGE,
+	FAIR,
+	NAIR,
 	NOTHING,
 	TRIGGERS
 } Buttons_t;
@@ -72,6 +76,8 @@ command step[] = {
 	{ NOTHING, 1 },
 
 	{ LEFT, 	2 },
+	{ NOTHING, 1 },
+	{ NOTHING, 1 },
 
 	{ NOTHING, 200 }
 
@@ -82,7 +88,7 @@ command step[] = {
 
 // Main entry point.
 int main(void) {
-	srand(time(NULL));
+	srand(1);
 	// We'll start by performing hardware and peripheral setup.
 	SetupHardware();
 	// We'll then enable global interrupts for our use.
@@ -341,6 +347,14 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 					ReportData->Button |= SWITCH_L;
 					break;
 
+				case ZR:
+					ReportData->Button |= SWITCH_ZR;
+					break;
+					
+				case ZL:
+					ReportData->Button |= SWITCH_ZL;
+					break;
+
 				case LEFT_ROLL:
 					ReportData->Button |= SWITCH_ZL;
 					ReportData->LX = STICK_MIN;				
@@ -351,6 +365,20 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 					ReportData->LX = STICK_MAX;				
 					break;
 
+				case SOPTDODGE:
+					ReportData->Button |= SWITCH_ZL;
+					ReportData->LY = STICK_MIN;		
+					break;
+
+				case FAIR:
+					ReportData->Button |= SWITCH_X | SWITCH_A;
+					ReportData->LX = STICK_MIN;		
+					break;
+
+				case NAIR:
+					ReportData->Button |= SWITCH_X | SWITCH_A;
+					break;
+				
 				case TRIGGERS:
 					ReportData->Button |= SWITCH_L | SWITCH_R;
 					break;
@@ -375,22 +403,42 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 			if (bufindex == 16 && duration_count == 0) 
 			{
 				wait_duration = rand() % 150 + 1;
-				option = rand() % 3;
+				option = rand() % 6;
 				step[16] = (command) { NOTHING, wait_duration };
 				
 				switch(option)
 				{
 					case 0:
 						step[17] = (command) { LEFT, 2 };
+						step[18] = (command) { ZL, 50 };
 						break;
 					
 					case 1:
-						step[17] = (command) { LEFT_ROLL, 2 };
+						step[17] = (command) { ZL, 50 };
 						break;
 					
 					case 2:
 						step[17] = (command) { X, 2 };
+						step[18] = (command) { ZL, 50 };
 						break;
+
+					case 3:
+						step[17] = (command) { A, 2 };
+						step[18] = (command) { ZL, 50 };
+						break;
+
+					case 4:
+						step[17] = (command) { DOWN, 1 };
+						step[18] = (command) { FAIR, 1 };
+						step[19] = (command) { LEFT, 10 };
+						break;
+
+					case 5:
+						step[17] = (command) { DOWN, 1 };
+						step[18] = (command) { NAIR, 1 };
+						step[19] = (command) { LEFT, 10 };
+						break;
+					
 				}
 				
 			}
