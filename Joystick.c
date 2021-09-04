@@ -19,6 +19,8 @@ these buttons for our use.
 */
 
 #include "Joystick.h"
+#include <stdlib.h>
+#include <time.h>
 
 typedef enum {
 	UP,
@@ -44,7 +46,7 @@ typedef struct {
 	uint16_t duration;
 } command; 
 
-static const command step[] = {
+command step[] = {
 	// Setup controller
 	{ NOTHING,  1 },
 	{ NOTHING,  1 },
@@ -55,7 +57,7 @@ static const command step[] = {
 	{ NOTHING,  1 },
 
 
-
+	{ NOTHING, 		5 },
 	{ RIGHT_ROLL,	5 },
 	{ NOTHING,		50 },
 	{ RIGHT_ROLL,	5 },
@@ -65,7 +67,13 @@ static const command step[] = {
 	{ NOTHING,	1 },
 	{ RIGHT_TILT,	1 },
 
-	{ NOTHING, 	200 }
+	{ NOTHING, 	50 },
+
+	{ NOTHING, 1 },
+
+	{ LEFT, 	2 },
+
+	{ NOTHING, 200 }
 
 
 
@@ -74,6 +82,7 @@ static const command step[] = {
 
 // Main entry point.
 int main(void) {
+	srand(time(NULL));
 	// We'll start by performing hardware and peripheral setup.
 	SetupHardware();
 	// We'll then enable global interrupts for our use.
@@ -202,6 +211,10 @@ int ypos = 0;
 int bufindex = 0;
 int duration_count = 0;
 int portsval = 0;
+
+int wait_duration = 1;
+int option = 0;
+
 
 // Prepare the next report for the host.
 void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
@@ -359,6 +372,29 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 				duration_count = 0;				
 			}
 
+			if (bufindex == 16 && duration_count == 0) 
+			{
+				wait_duration = rand() % 150 + 1;
+				option = rand() % 3;
+				step[16] = (command) { NOTHING, wait_duration };
+				
+				switch(option)
+				{
+					case 0:
+						step[17] = (command) { LEFT, 2 };
+						break;
+					
+					case 1:
+						step[17] = (command) { LEFT_ROLL, 2 };
+						break;
+					
+					case 2:
+						step[17] = (command) { X, 2 };
+						break;
+				}
+				
+			}
+
 
 			if (bufindex > (int)( sizeof(step) / sizeof(step[0])) - 1)
 			{
@@ -367,6 +403,8 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 
 				bufindex = 7;
 				duration_count = 0;
+
+
 
 				state = BREATHE;
 
