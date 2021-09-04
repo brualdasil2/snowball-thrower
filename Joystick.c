@@ -33,7 +33,8 @@ typedef enum {
 	B,
 	L,
 	R,
-	THROW,
+	LEFT_ROLL,
+	RIGHT_ROLL,
 	NOTHING,
 	TRIGGERS
 } Buttons_t;
@@ -55,8 +56,17 @@ static const command step[] = {
 
 
 
-	{ DOWN,		1 },
-	{ LEFT_TILT, 	3 }
+	{ RIGHT_ROLL,	5 },
+	{ NOTHING,		50 },
+	{ RIGHT_ROLL,	5 },
+	{ NOTHING,		50 },
+
+	{ X,		1 },
+	{ NOTHING,	1 },
+	{ RIGHT_TILT,	1 },
+
+	{ NOTHING, 	200 }
+
 
 
 
@@ -318,9 +328,14 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 					ReportData->Button |= SWITCH_L;
 					break;
 
-				case THROW:
-					ReportData->LY = STICK_MIN;				
-					ReportData->Button |= SWITCH_R;
+				case LEFT_ROLL:
+					ReportData->Button |= SWITCH_ZL;
+					ReportData->LX = STICK_MIN;				
+					break;
+
+				case RIGHT_ROLL:
+					ReportData->Button |= SWITCH_ZL;
+					ReportData->LX = STICK_MAX;				
 					break;
 
 				case TRIGGERS:
